@@ -1,0 +1,58 @@
+=> Token Bazlý Kimlik Doðrulama Ýle NKatmanlý Proje (Json Web Token)
+
+=> Projedeki Senaryomuz þudur;
+AuthServer.API'mýz token üretmekten ve daðýtmaktan sorumlu (Access ve Refresh Token)
+MiniApp1.API => Access tokenlarý kontrol ederek ona göre geriye data dönüyor. (Kullanýcý ile) 
+MiniApp2.API => Access tokenlarý kontrol ederek ona göre geriye data dönüyor. (Kullanýcý ile) 
+MiniApp3.API => Access tokenlarý kontrol ederek ona göre geriye data dönüyor. (Kullanýcý olmadan - Hava durumu,Borsa gibi) 
+
+
+---------------------------------------------------------------------------------------------
+=> Genel Tanýmlamalar
+
+=> Api'den direkt olarak beslenen WEB (SPA-Single Page Application - Angular-React-Vue.js) veya Mobil App (Android,IOS) gibi uygulamalar için Token Bazlý kimlik doðrulama gereklidir.Mvc projeleri için token bazlý kimlik doðrulamaya gerek yoktur. Çünkü Apiden beslenmiyor. Cookie bazlý kimlik doðrulama yeterlidir.
+
+=> Projede tasarladýðýmýz AutServer hem token daðýtýp hem de data geriye dönebilecek. Token daðýtan uygulamamýz ayný zamanda endpointe de sahip olabilir. Ancak þirketlerde sadece token daðýtacak þekilde tasarlanýr ve tasarlanmalýdýr. Best practices token daðýtan uygulama sadece token daðýtmalýdýr. Geriye data dönmemelidir.
+
+=> Cookie bazlý doðrulamada herhangi bir art niyetli biri cookie bilgilerini ele geçirdiðinde o bilgileri sonsuza kadar alabilir. Ama tokenýn ömrü olduðu için; 1 dakika verdiðimizi kabul edelim kötü niyetli bir kiþi ele geçirdi 10.saniye de 50 saniye süresi kalýr.
+
+=> .Net tarafýnda IdentityServer4 olarak adlandýrýlan hazýr bir kütüphane ile OAuth 2.0 (Kimlik yetkilendirme) ve OpenIdConnect (Kimlik doðrulama) kütüphanelerine eriþebiliriz. Kodlarý tek tek yazmaktansa. Payloadda tutulan her bir data Claim nesnesidir.
+
+=> Json WEb Token Nedir?
+IETF tarafýndan sunulan standart bir token biçimidir.
+Kimlik doðrulama ve kimlik yetkilendirme için.
+=> authentication - kimlik doðrulama
+=> authorization - yetkilendirme
+
+Json Web Token 3 tane parçadan oluþur. Kendi sitesinde bunu gösteriyor 3 farklý renkte kod yazýlmýþ olarak.
+
+- Kýrmýzý ile gösterilen kýsým Header olarak Algoritma ve Token Type’ýný barýndýrýr. Alg: kýsmý HS256-512 olabilir.
+- Mor ile gösterilen  kýsým Payload yani Datalarýn Json formatýnda tutulduðu kýsýmdýr. (Key-value þeklinde) Tutacaðým data Json olduðu için Url üzerinden taþýyabiliriz. Çerez kullanma zorunluluðunu ortadan kaldýrýr. Çünkü token üzerinden kimlik doðrulama ve yetkilendirme iþlemini Apilere yapabiliyoruz. Hýzlý bir þekilde doðrulanabilir. Günümüzde bu sebeplerle en çok kullanýlan token biçimidir.
+-Turkuaz olan kýsým da imzalama iþlemini yaptýðýmýz yer. Ýki tip imzalama vardýr. Simetrik imzalama-asimetrik imzalama. Simetrik imzalama token imzasý oluþtururken kullandýðým string ifadeyi doðrularken de kullanýyorsam bu simetrik imzalamadýr. Asimetrik imzalamada ise private key ve public key vardýr. Private key ile imzalayýp public key ile doðrulama iþlemidir. Kilit-anahtar mantýðý. Bu kursta simetrik imzalama kullanýyoruz.
+
+Ýmza kýsmýnda header ve payload encode edilebilir yani token’a ulaþan biri bu bilgilere ulaþabilir ancak imzayý doðrulamadan bilgiyi deðiþtiremez. Asýl önemli tarafý budur.
+
+=> Access token Api lara istek yapmak için kullanýlýr. Biçimi Json’dýr. Payloadýnda data bulundurabilir. Ömrü mümkün olduðunca kýsa olmalýdýr. Örneðin access token ömrü bir gün ise refresh token  ise 1 ay-2 ay vs. olabilir. Kural refresh token ömrü her zaman access tokendan büyük olmalýdýr. Yoksa mantýk hatasý olur.
+=> Refresh token ise Access token ömrü dolduðunda yeni token almak için kullanýlan tokendýr. Biçimi herhangi bir string ifade olabilir. Bunu oluþtururken Guid de yapabilirdik ancak Guidin çok düþükte olsa tekrarlanma ihtimali var o sebeple Microsoft kütüphanesinde tekrarlanma ihtimali 0 olan bir kütüphaneden yararlanacaðýz. Ýçerisinde data barýndýrmýyoruz random string bir deðer olarak düþünelim. Refresh tokený Apilara göndermiyoruz Access Token ömrü tükendiðinde yenilemek için AutServer ýmýza (Token daðýtan Api) gönderiyoruz.
+
+=> Apiye istek Access Token ile geldiðinde 3 þeyi kontrol eder 1-Token imzasý 2-Token süresi 3-AuthServer’dan üretilip üretilmediðini (payloadýndaki datalara bakarak anlýyor.)
+
+
+Proje Notlarý=> "SharedLibrary" projemize de Microsoft.AspNetCore.App frameworkünü yüklüyoruz. Çünkü Apiler arasý haberleþmeyi saðlayacak.
+
+=> Bir projeye framework yüklemek için => Edit Project File Kýsmýnda;
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  ---------------------------------------> "Microsoft.AspNetCore.App" frameworkünü kullanmak için sadece bu aþaðýdaki bölümü ekledik.
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App">    
+    </FrameworkReference>    
+  </ItemGroup>
+  --------------------------------------->
+</Project>
+
+
