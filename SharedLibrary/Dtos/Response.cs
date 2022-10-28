@@ -2,6 +2,7 @@
 
 namespace SharedLibrary.Dtos
 {
+    //Response modelimizi burada oluşturduk.
     public class Response<T> where T : class
     {
         public T Data { get; private set; }

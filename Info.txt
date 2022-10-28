@@ -28,7 +28,7 @@ Json Web Token 3 tane parçadan oluþur. Kendi sitesinde bunu gösteriyor 3 farklý 
 
 - Kýrmýzý ile gösterilen kýsým Header olarak Algoritma ve Token Type’ýný barýndýrýr. Alg: kýsmý HS256-512 olabilir.
 - Mor ile gösterilen  kýsým Payload yani Datalarýn Json formatýnda tutulduðu kýsýmdýr. (Key-value þeklinde) Tutacaðým data Json olduðu için Url üzerinden taþýyabiliriz. Çerez kullanma zorunluluðunu ortadan kaldýrýr. Çünkü token üzerinden kimlik doðrulama ve yetkilendirme iþlemini Apilere yapabiliyoruz. Hýzlý bir þekilde doðrulanabilir. Günümüzde bu sebeplerle en çok kullanýlan token biçimidir.
--Turkuaz olan kýsým da imzalama iþlemini yaptýðýmýz yer. Ýki tip imzalama vardýr. Simetrik imzalama-asimetrik imzalama. Simetrik imzalama token imzasý oluþtururken kullandýðým string ifadeyi doðrularken de kullanýyorsam bu simetrik imzalamadýr. Asimetrik imzalamada ise private key ve public key vardýr. Private key ile imzalayýp public key ile doðrulama iþlemidir. Kilit-anahtar mantýðý. Bu kursta simetrik imzalama kullanýyoruz.
+- Turkuaz olan kýsým da imzalama iþlemini yaptýðýmýz yer. Ýki tip imzalama vardýr. Simetrik imzalama-asimetrik imzalama. Simetrik imzalama token imzasý oluþtururken kullandýðým string ifadeyi doðrularken de kullanýyorsam bu simetrik imzalamadýr. Asimetrik imzalamada ise private key ve public key vardýr. Private key ile imzalayýp public key ile doðrulama iþlemidir. Kilit-anahtar mantýðý. Bu kursta simetrik imzalama kullanýyoruz.
 
 Ýmza kýsmýnda header ve payload encode edilebilir yani token’a ulaþan biri bu bilgilere ulaþabilir ancak imzayý doðrulamadan bilgiyi deðiþtiremez. Asýl önemli tarafý budur.
 

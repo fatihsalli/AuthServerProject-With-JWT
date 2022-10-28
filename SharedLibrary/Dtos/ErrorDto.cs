@@ -2,7 +2,7 @@
 
 namespace SharedLibrary.Dtos
 {
-    //Tüm Api lerde response model olarak ErrorDto kullanacağız. O sebeple SharedLibrary içine aldık.
+    //Tüm Api lerde response modelin Erroru olarak ErrorDto kullanacağız. O sebeple SharedLibrary içine aldık.
     public class ErrorDto
     {
         public ErrorDto()
