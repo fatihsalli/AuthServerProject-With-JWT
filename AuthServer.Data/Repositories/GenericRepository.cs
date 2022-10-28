@@ -11,10 +11,9 @@ namespace AuthServer.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        //Sonrasında ProductRepository vs. oluşturduğumda context'e ulaşabilmek için protected tanımladık.
+        //Sonrasında ProductRepository vs. oluşturduğumda context'e ulaşabilmek için protected tanımladım.
         protected readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
-
         public GenericRepository(AppDbContext context)
         {
             _context = context;
@@ -26,9 +25,9 @@ namespace AuthServer.Data.Repositories
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public IQueryable<T> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return _dbSet.AsNoTracking().AsQueryable();
         }
 
         public async Task<T> GetByIdAsync(int id)

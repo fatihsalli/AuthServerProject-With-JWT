@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthServer.Core.UnitOfWork
+namespace AuthServer.Core.UnitOfWorks
 {
     public interface IUnitOfWork
     {
