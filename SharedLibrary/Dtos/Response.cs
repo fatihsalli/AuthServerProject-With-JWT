@@ -20,7 +20,7 @@ namespace SharedLibrary.Dtos
 
         public static Response<T> Success(int statusCode)
         {
-            return new Response<T> { Data=default, StatusCode = statusCode, IsSuccessful = true };
+            return new Response<T> { StatusCode = statusCode, IsSuccessful = true };
         }
 
         public static Response<T> Fail(ErrorDto errorDto, int statusCode)
