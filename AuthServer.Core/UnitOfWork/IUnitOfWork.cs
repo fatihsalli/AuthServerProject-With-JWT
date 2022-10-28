@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AuthServer.Core.Services
+namespace AuthServer.Core.UnitOfWork
 {
     public interface IUnitOfWork
     {
-
-
+        void Commit();
+        Task CommitAsync();
 
     }
 }
