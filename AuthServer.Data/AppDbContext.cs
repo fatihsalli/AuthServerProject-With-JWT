@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,13 @@ namespace AuthServer.Data
         //Access tokenları değil Refresh tokenları serverda tutacağız.
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            //Tüm Configuration dosyalarını nasıl buluyor "ApplyConfigurationsFromAssembly" methodu ile "IEntityTypeConfiguration" den miras alan Assemblyleri buluyor. Assembly.GetExecutingAssembly() demek de çalıştığımız klasörde ara demektir. 
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            base.OnModelCreating(builder);
+        }
 
     }
 }
