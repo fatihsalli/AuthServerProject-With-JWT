@@ -14,10 +14,10 @@ namespace AuthServer.Core.Services
         //Client tarafına dönüş yapacağımız için Response olarak direkt dönüyoruz. Bunu Apide yapmak yerine Service tarafında yaptık.
         Task<Response<TDto>> GetByIdAsync(int id);
         Task<Response<IEnumerable<TDto>>> GetAllAsync();
-        Task <Response<IEnumerable<TDto>>> WhereAsync(Expression<Func<TDto, bool>> predicate);
-        Task<Response<TDto>> AddAsync(TDto entity);
-        Task<Response<NoDataDto>> RemoveAsync(TDto entity);
-        Task<Response<NoDataDto>> UpdateAsync(TDto entity);
+        Task <Response<IEnumerable<TDto>>> WhereAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<Response<TDto>> AddAsync(TDto dto);
+        Task<Response<NoDataDto>> RemoveAsync(int id);
+        Task<Response<NoDataDto>> UpdateAsync(TDto dto);
 
 
     }

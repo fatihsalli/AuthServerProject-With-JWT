@@ -36,7 +36,7 @@ namespace AuthServer.Data.Repositories
             var entity= await _dbSet.FindAsync(id);
             if (entity!=null)
             {
-                //Memory'de tutulmaması için track edilmesini kapattık.
+                //Memory'de tutulmaması için track edilmesini kapattık. Burada kapadık Update methodunda zaten biz veriyoruz track edilirken aynı id olan modeller karışmaması için yaptık.
                 _context.Entry(entity).State = EntityState.Detached;
             }
             return entity;
