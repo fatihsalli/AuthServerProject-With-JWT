@@ -12,7 +12,7 @@ MiniApp3.API => Access tokenlarý kontrol ederek ona göre geriye data dönüyor. (K
 
 => Api'den direkt olarak beslenen WEB (SPA-Single Page Application - Angular-React-Vue.js) veya Mobil App (Android,IOS) gibi uygulamalar için Token Bazlý kimlik doðrulama gereklidir.Mvc projeleri için token bazlý kimlik doðrulamaya gerek yoktur. Çünkü Apiden beslenmiyor. Cookie bazlý kimlik doðrulama yeterlidir.
 
-=> Projede tasarladýðýmýz AutServer hem token daðýtýp hem de data geriye dönebilecek. Token daðýtan uygulamamýz ayný zamanda endpointe de sahip olabilir. Ancak þirketlerde sadece token daðýtacak þekilde tasarlanýr ve tasarlanmalýdýr. Best practices token daðýtan uygulama sadece token daðýtmalýdýr. Geriye data dönmemelidir.
+=> Projede tasarladýðýmýz AuthServer hem token daðýtýp hem de data geriye dönebilecek. Token daðýtan uygulamamýz ayný zamanda endpointe de sahip olabilir. Ancak þirketlerde sadece token daðýtacak þekilde tasarlanýr ve tasarlanmalýdýr. Best practices token daðýtan uygulama sadece token daðýtmalýdýr. Geriye data dönmemelidir.
 
 => Cookie bazlý doðrulamada herhangi bir art niyetli biri cookie bilgilerini ele geçirdiðinde o bilgileri sonsuza kadar alabilir. Ama tokenýn ömrü olduðu için; 1 dakika verdiðimizi kabul edelim kötü niyetli bir kiþi ele geçirdi 10.saniye de 50 saniye süresi kalýr.
 
