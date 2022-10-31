@@ -116,6 +116,7 @@ namespace AuthServer.Service.Services
             //Token imza kısmı
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
+            //appsettings de girdiğimiz kısımları burada tanımladık.
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
              issuer: _tokenOption.Issuer,
              expires: accessTokenExpiration,
