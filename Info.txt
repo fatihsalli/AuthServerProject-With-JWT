@@ -24,6 +24,8 @@ Kimlik doðrulama ve kimlik yetkilendirme için.
 => authentication - kimlik doðrulama
 => authorization - yetkilendirme
 
+=> Payloadda tutulan key-value çiftleri claim olarak adlandýrýlýr. Yani payloaddaki tüm Key-value deðerleri aslýnda oluþturulan claim nesnesinden geliyor.
+
 Json Web Token 3 tane parçadan oluþur. Kendi sitesinde bunu gösteriyor 3 farklý renkte kod yazýlmýþ olarak.
 
 - Kýrmýzý ile gösterilen kýsým Header olarak Algoritma ve Token Type’ýný barýndýrýr. Alg: kýsmý HS256-512 olabilir.
@@ -56,3 +58,17 @@ Proje Notlarý=> "SharedLibrary" projemize de Microsoft.AspNetCore.App frameworkü
 </Project>
 
 
+=> AuthServer Api projemizde appsettings kýsmýna aþaðýdaki ayarlar ile dahil ettik. Aþaðýdaki ayarlara karþýlýk gelen bir class oluþturuyoruz. SharedLibrary=> Configurations=> CustomTokenOption
+
+  "TokenOption": {
+        => Kimlerin kullanacaðýný string [] ifade ile belirrtik
+    "Audience": [ "www.authserver.com", "www.miniapi1.com", "www.miniapi2.com", "www.miniapi3.com" ],
+        => Tokený kimin daðýtacaðý
+    "Issuer": "www.authserver.com",
+        => Access Token ömrü
+    "AccessTokenExpiration": 1,
+        => Refresh Token ömrü
+    "RefreshTokenExpiration": 600,
+        => Simetrik imzalamada kullanacaðýz string key
+    "SecurityKey": "mysecuritykeymysecuritykeymysecuritykeymysecuritykey"
+  },
