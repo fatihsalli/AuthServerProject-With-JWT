@@ -53,8 +53,10 @@ namespace MiniApp3.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
             //Doðrulama için ekledik.
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
