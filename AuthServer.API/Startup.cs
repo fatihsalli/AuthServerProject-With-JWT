@@ -1,4 +1,6 @@
+using AuthServer.API.Validations;
 using AuthServer.Core.Configuration;
+using AuthServer.Core.DTOs;
 using AuthServer.Core.Models;
 using AuthServer.Core.Repositories;
 using AuthServer.Core.Services;
@@ -7,6 +9,8 @@ using AuthServer.Data;
 using AuthServer.Data.Repositories;
 using AuthServer.Data.UnitOfWorks;
 using AuthServer.Service.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.Configurations;
+using SharedLibrary.Extensions;
 using SharedLibrary.Services;
 using System;
 using System.Collections.Generic;
@@ -103,6 +108,18 @@ namespace AuthServer.API
             });
 
             services.AddControllers();
+
+            //services.AddControllers().AddFluentValidation(options =>
+            //{
+            //    options.RegisterValidatorsFromAssemblyContaining<Startup>();
+            //});
+            //Fluent Validation deðiþikliði sonrasý aþaðýdaki gibi yazýyoruz. Önceden üstteki gibi yazýyorduk.
+
+            services.AddFluentValidationAutoValidation();
+            services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
+
+            services.UseCustomValidationResponse();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AuthServer.API", Version = "v1" });
