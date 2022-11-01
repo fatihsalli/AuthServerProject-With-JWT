@@ -134,6 +134,11 @@ namespace AuthServer.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthServer.API v1"));
             }
+            else
+            {
+                //Bir sorun olmasý durumunda özel olarak düzenlediðimiz middleware üzerinden exception fýrlatýyoruz.
+                app.UseCustomException();
+            }
 
             app.UseHttpsRedirection();
 
