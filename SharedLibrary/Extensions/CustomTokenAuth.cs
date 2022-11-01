@@ -9,7 +9,7 @@ namespace SharedLibrary.Extensions
     //Json web token doğrulamasına diğer apilerde ulaşabilmek adına ortak bir extension class oluşturduk. Buradan Apilere hizmet edecek."AuthServer.API" projesi startup içerisinde token doğrulama ile ilgili yazdığımız kodları buraya kopyaladık.
     public static class CustomTokenAuth
     {
-        public static void AddCustomTokenAuth(this IServiceCollection services,CustomTokenOption tokenOptions)
+        public static void AddCustomTokenAuth(this IServiceCollection services, CustomTokenOption tokenOptions)
         {
             services.AddAuthentication(options =>
             {

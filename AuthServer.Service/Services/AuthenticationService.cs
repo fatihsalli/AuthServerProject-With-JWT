@@ -35,37 +35,37 @@ namespace AuthServer.Service.Services
         //Üyelik gerektiren api için kullanılacak.
         public async Task<Response<TokenDto>> CreateTokenAsync(LoginDto loginDto)
         {
-            if (loginDto==null)
+            if (loginDto == null)
             {
                 throw new ArgumentNullException(nameof(loginDto));
             }
 
-            var user= await _userManager.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            if (user==null)
+            if (user == null)
             {
                 //TokenDto döndük ama boş olarak.Response model tokenDto istediği için Fail ile TokenDto null olarak gönderiyoruz. Kötü niyetli kullanıcılar hangisinin yanlış olduğunu anlayamasın diye Email veya şifre dedik.
                 return Response<TokenDto>.Fail("Email or Password is wrong", 400, true);
             }
 
-            if (!await _userManager.CheckPasswordAsync(user,loginDto.Password))
+            if (!await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 return Response<TokenDto>.Fail("Email or Password is wrong", 400, true);
             }
 
-            var token=_tokenservice.CreateToken(user);
+            var token = _tokenservice.CreateToken(user);
 
             //Sistemde refresh token olup olmadığını kontrol ediyoruz.
             var userRefreshToken = await _userRefreshTokenRepository.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
             //Sistemde refresh token olmadığı için yeniden ürettik.
-            if (userRefreshToken==null)
+            if (userRefreshToken == null)
             {
                 await _userRefreshTokenRepository.AddAsync(new UserRefreshToken { UserId = user.Id, Code = token.RefreshToken, Expiration = token.ResfreshTokenExpiration });
             }
             else
             {
-                userRefreshToken.Code=token.RefreshToken;
-                userRefreshToken.Expiration=token.ResfreshTokenExpiration;
+                userRefreshToken.Code = token.RefreshToken;
+                userRefreshToken.Expiration = token.ResfreshTokenExpiration;
             }
 
             await _unitOfWork.CommitAsync();
@@ -76,9 +76,9 @@ namespace AuthServer.Service.Services
         public Response<ClientTokenDto> CreateTokenByClient(ClientLoginDto clientLoginDto)
         {
             //Appsettings üzerinden oluşturduğumuz client dizininde bize gelen id var mı yok mu buna bakıyoruz.
-            var client=_clients.SingleOrDefault(x=> x.ClientId == clientLoginDto.ClientId && x.ClientSecret==clientLoginDto.ClientSecret);
+            var client = _clients.SingleOrDefault(x => x.ClientId == clientLoginDto.ClientId && x.ClientSecret == clientLoginDto.ClientSecret);
 
-            if (client==null)
+            if (client == null)
             {
                 return Response<ClientTokenDto>.Fail("ClientId or ClientSecret not found", 404, true);
             }
@@ -90,16 +90,16 @@ namespace AuthServer.Service.Services
         public async Task<Response<TokenDto>> CreateTokenByRefreshToken(string refreshToken)
         {
             //Sistemde refresh token olup olmadığını kontrol ediyoruz.
-            var existRefreshToken = await _userRefreshTokenRepository.Where(x=> x.Code==refreshToken).SingleOrDefaultAsync();
+            var existRefreshToken = await _userRefreshTokenRepository.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
 
             if (existRefreshToken == null)
             {
-                return Response<TokenDto>.Fail("Refresh token not found",404, true);
+                return Response<TokenDto>.Fail("Refresh token not found", 404, true);
             }
             //Userı sistemden yakaladık.
             var user = await _userManager.FindByIdAsync(existRefreshToken.UserId);
 
-            if (user==null)
+            if (user == null)
             {
                 return Response<TokenDto>.Fail("User Id not found", 404, true);
             }
@@ -115,7 +115,7 @@ namespace AuthServer.Service.Services
         {
             var existRefreshToken = await _userRefreshTokenRepository.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
 
-            if (existRefreshToken==null)
+            if (existRefreshToken == null)
             {
                 return Response<NoDataDto>.Fail("Refresh token not found", 404, true);
             }

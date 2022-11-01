@@ -4,10 +4,7 @@ using AuthServer.Core.Services;
 using AuthServer.Service.Mapping;
 using Microsoft.AspNetCore.Identity;
 using SharedLibrary.Dtos;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AuthServer.Service.Services
@@ -29,24 +26,24 @@ namespace AuthServer.Service.Services
                 UserName = createUserDto.UserName
             };
             //Passwordu hashleyip kendisi dolduruyor.
-            var result=await _userManager.CreateAsync(user, createUserDto.Password);
+            var result = await _userManager.CreateAsync(user, createUserDto.Password);
 
             if (!result.Succeeded)
             {
-                var errors = result.Errors.Select(x=> x.Description).ToList();
+                var errors = result.Errors.Select(x => x.Description).ToList();
                 return Response<UserAppDto>.Fail(new ErrorDto(errors, true), 400);
             }
 
-            return Response<UserAppDto>.Success(ObjectMapper.Mapper.Map<UserAppDto>(user),200);
+            return Response<UserAppDto>.Success(ObjectMapper.Mapper.Map<UserAppDto>(user), 200);
         }
 
         public async Task<Response<UserAppDto>> GetUserByNameAsync(string userName)
         {
-            var user=await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
 
-            if (user==null)
+            if (user == null)
             {
-                return Response<UserAppDto>.Fail("UserName not found", 404,true);
+                return Response<UserAppDto>.Fail("UserName not found", 404, true);
             }
 
             return Response<UserAppDto>.Success(ObjectMapper.Mapper.Map<UserAppDto>(user), 200);

@@ -1,10 +1,8 @@
 ﻿using AuthServer.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AuthServer.Data.Repositories
@@ -33,8 +31,8 @@ namespace AuthServer.Data.Repositories
         public async Task<T> GetByIdAsync(int id)
         {
             //Find primary key bölümünü arar. Metotu çağırdığımızda "params object [] keyValues" olarak ifade yer alır bunun nedeni Sql tarafında bir tabloda 2 alan primary key olabilir.
-            var entity= await _dbSet.FindAsync(id);
-            if (entity!=null)
+            var entity = await _dbSet.FindAsync(id);
+            if (entity != null)
             {
                 //Memory'de tutulmaması için track edilmesini kapattık. Burada kapadık Update methodunda zaten biz veriyoruz track edilirken aynı id olan modeller karışmaması için yaptık.
                 _context.Entry(entity).State = EntityState.Detached;

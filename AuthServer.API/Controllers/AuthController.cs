@@ -1,6 +1,5 @@
 ﻿using AuthServer.Core.DTOs;
 using AuthServer.Core.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -21,7 +20,7 @@ namespace AuthServer.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateToken(LoginDto loginDto)
         {
-            var result=await _authenticationService.CreateTokenAsync(loginDto);
+            var result = await _authenticationService.CreateTokenAsync(loginDto);
             //result generic aldığı için içerisinden generic ne olduğunu çıkartıyor.
             return ActionResultInstance(result);
         }

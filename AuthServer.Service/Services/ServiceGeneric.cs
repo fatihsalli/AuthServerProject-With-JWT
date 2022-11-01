@@ -23,10 +23,10 @@ namespace AuthServer.Service.Services
 
         public async Task<Response<TDto>> AddAsync(TDto dto)
         {
-            var newEntity=ObjectMapper.Mapper.Map<TEntity>(dto);
+            var newEntity = ObjectMapper.Mapper.Map<TEntity>(dto);
             await _genericRepository.AddAsync(newEntity);
             await _unitOfWork.CommitAsync();
-            var newDto=ObjectMapper.Mapper.Map<TDto>(newEntity);
+            var newDto = ObjectMapper.Mapper.Map<TDto>(newEntity);
             return Response<TDto>.Success(newDto, 200);
         }
 
@@ -39,12 +39,12 @@ namespace AuthServer.Service.Services
 
         public async Task<Response<TDto>> GetByIdAsync(int id)
         {
-            var entity= await _genericRepository.GetByIdAsync(id);
-            if (entity==null)
+            var entity = await _genericRepository.GetByIdAsync(id);
+            if (entity == null)
             {
-                return Response<TDto>.Fail("Id not found!",404,true);
+                return Response<TDto>.Fail("Id not found!", 404, true);
             }
-            var dto=ObjectMapper.Mapper.Map<TDto>(entity);
+            var dto = ObjectMapper.Mapper.Map<TDto>(entity);
             return Response<TDto>.Success(dto, 200);
         }
 
@@ -71,8 +71,8 @@ namespace AuthServer.Service.Services
 
         public async Task<Response<IEnumerable<TDto>>> WhereAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            var entityList= await _genericRepository.Where(predicate).ToListAsync();
-            var dtoList= ObjectMapper.Mapper.Map<List<TDto>>(entityList);
+            var entityList = await _genericRepository.Where(predicate).ToListAsync();
+            var dtoList = ObjectMapper.Mapper.Map<List<TDto>>(entityList);
             return Response<IEnumerable<TDto>>.Success(dtoList, 200);
         }
     }

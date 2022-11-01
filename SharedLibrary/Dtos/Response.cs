@@ -13,7 +13,7 @@ namespace SharedLibrary.Dtos
         public ErrorDto Error { get; private set; }
 
         //Static factory method tanımladık factory desing patternden gelir.(Nesne üretme yolu)
-        public static Response<T> Success(T data,int statusCode)
+        public static Response<T> Success(T data, int statusCode)
         {
             return new Response<T> { Data = data, StatusCode = statusCode, IsSuccessful = true };
         }
@@ -28,9 +28,9 @@ namespace SharedLibrary.Dtos
             return new Response<T> { Error = errorDto, StatusCode = statusCode, IsSuccessful = false };
         }
 
-        public static Response<T> Fail(string errorMessage, int statusCode,bool isShow)
+        public static Response<T> Fail(string errorMessage, int statusCode, bool isShow)
         {
-            var errorDto = new ErrorDto(errorMessage,isShow);
+            var errorDto = new ErrorDto(errorMessage, isShow);
             return new Response<T> { Error = errorDto, StatusCode = statusCode, IsSuccessful = false };
         }
 

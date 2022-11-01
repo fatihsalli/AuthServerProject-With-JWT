@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using SharedLibrary.Dtos;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharedLibrary.Extensions
 {
@@ -20,7 +16,7 @@ namespace SharedLibrary.Extensions
                 {
                     var errors = context.ModelState.Values.Where(x => x.Errors.Count > 0).SelectMany(x => x.Errors).Select(x => x.ErrorMessage);
 
-                    ErrorDto errorDto = new(errors.ToList(),true);
+                    ErrorDto errorDto = new(errors.ToList(), true);
 
                     var response = Response<NoContentResult>.Fail(errorDto, 400);
 

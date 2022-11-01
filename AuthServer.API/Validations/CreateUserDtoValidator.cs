@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace AuthServer.API.Validations
 {
-    public class CreateUserDtoValidator:AbstractValidator<CreateUserDto>
+    public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
     {
         public CreateUserDtoValidator()
         {

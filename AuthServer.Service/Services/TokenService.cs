@@ -66,7 +66,7 @@ namespace AuthServer.Service.Services
             //
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, client.ClientId.ToString()));
-           
+
             return claims;
         }
 
@@ -80,29 +80,29 @@ namespace AuthServer.Service.Services
             var securityKey = SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
 
             //Token imza kısmı
-            SigningCredentials signingCredentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256Signature);
+            SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             //appsettings de girdiğimiz kısımları burada tanımladık.
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-                issuer:_tokenOption.Issuer,
-                expires:accessTokenExpiration,
-                notBefore:DateTime.Now,
+                issuer: _tokenOption.Issuer,
+                expires: accessTokenExpiration,
+                notBefore: DateTime.Now,
                 claims: GetClaims(userApp, _tokenOption.Audience),
-                signingCredentials:signingCredentials);
+                signingCredentials: signingCredentials);
 
             //Tokenı oluşturacak olan class
             var handler = new JwtSecurityTokenHandler();
 
             //Tokenı oluşturan metot
-            var token=handler.WriteToken(jwtSecurityToken);
+            var token = handler.WriteToken(jwtSecurityToken);
 
             //TokenDto tipimize çeviriyoruz.
             var tokenDto = new TokenDto
             {
-                AccessToken=token,
-                RefreshToken=CreateRefreshToken(),
-                AccessTokenExpiration=accessTokenExpiration,
-                ResfreshTokenExpiration=refreshTokenExpiration
+                AccessToken = token,
+                RefreshToken = CreateRefreshToken(),
+                AccessTokenExpiration = accessTokenExpiration,
+                ResfreshTokenExpiration = refreshTokenExpiration
             };
 
             return tokenDto;
@@ -110,9 +110,9 @@ namespace AuthServer.Service.Services
 
         public ClientTokenDto CreateTokenByClient(Client client)
         {
-            var accessTokenExpiration= DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
+            var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
 
-            var securityKey=SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
+            var securityKey = SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
 
             //Token imza kısmı
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
@@ -134,7 +134,7 @@ namespace AuthServer.Service.Services
             var tokenDto = new ClientTokenDto
             {
                 AccessToken = token,
-                AccessTokenExpiration= accessTokenExpiration
+                AccessTokenExpiration = accessTokenExpiration
             };
 
             return tokenDto;

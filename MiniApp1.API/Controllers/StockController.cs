@@ -15,7 +15,7 @@ namespace MiniApp1.API.Controllers
         public IActionResult GetStock()
         {
             //veri tabanında userName veya userId alanları üzerinden gerekli dataları çekebiliriz.
-            var userName=HttpContext.User.Identity.Name;
+            var userName = HttpContext.User.Identity.Name;
             var userIdClaim = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
             return Ok($"Stock => UserName:{userName}-UserId: {userIdClaim.Value}");

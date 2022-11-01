@@ -53,7 +53,7 @@ namespace AuthServer.API
             {
                 //option.MigrationsAssembly("AuthServer/Data");
                 //Üstteki gibi yazmak yerine dinamik þekilde vermek için Assembly kullandýk. Böylece Repository ismi deðiþse de bulabilmesi için.
-                x.UseSqlServer(Configuration.GetConnectionString("SqlServer"),option=>
+                x.UseSqlServer(Configuration.GetConnectionString("SqlServer"), option =>
                 {
                     option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
                 });
@@ -103,7 +103,7 @@ namespace AuthServer.API
                     ValidateIssuer = true,
                     ValidateLifetime = true,
                     //Bir tokena ömür verdiðimizde 1 saat örneðin, default olarak 5 dklýk pay ekler. Farklý zonelardaki farklý serverlar arasýndaki farktan dolayý defaul olarak 5 dk ekler. Aþaðýda biz bu özelliði kapattýk. (Farklý serverlara kurulan apiler arasýndaki zaman farkýný tolere etmek için ) (Postmanden test yapacaðýmýz için kapattýk)
-                    ClockSkew=TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -119,7 +119,7 @@ namespace AuthServer.API
             services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
 
             services.UseCustomValidationResponse();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AuthServer.API", Version = "v1" });
