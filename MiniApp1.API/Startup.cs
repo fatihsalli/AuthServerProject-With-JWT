@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SharedLibrary.Configurations;
+using SharedLibrary.Extensions;
 
 namespace MiniApp1.API
 {
@@ -23,9 +18,14 @@ namespace MiniApp1.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //CustomTokenOption ile appsetting arasýndaki iliþkiyi kurduk. TokenOption içerisindeki bilgileri CustomTokenOption nesnesi ile türetebilmek için bu iliþkiyi kurduk. (Options pattern)
+            services.Configure<CustomTokenOption>(Configuration.GetSection("TokenOption"));
+            //DI container içerisinde direkt olarak nesne türettik. Token sistemi için.
+            var tokenOptions = Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
+            //Extension metot - SharedLibraryde oluþturduðumuz. Token doðrulama için. Birden fazla Api olduðu için SharedLibrary'de extension metot oluþturduk.
+            services.AddCustomTokenAuth(tokenOptions);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -34,7 +34,6 @@ namespace MiniApp1.API
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -47,7 +46,8 @@ namespace MiniApp1.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            //Doðrulama için ekledik.
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

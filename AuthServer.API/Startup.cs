@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SharedLibrary.Configurations;
+using SharedLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -66,7 +67,7 @@ namespace AuthServer.API
             //Client ile appsetting arasýndaki iliþkiyi kurduk. Clients içerisindeki bilgileri CustomTokenOption nesnesi ile türetebilmek için bu iliþkiyi kurduk. (Options pattern)
             services.Configure<List<Client>>(Configuration.GetSection("Clients"));
 
-            //Tokenlar ile ilgili 
+            //Tokenlar ile ilgili (Doðrulama iþlemi için)
             services.AddAuthentication(options =>
             {
                 //Farklý login giriþi sistemleri (Örneðin bir sitede bayi ve müþteri giriþi gibi) olsaydý þemalarý ayýrmamýz gerekirdi. Ama bizde tek login giriþi sistemi olduðu için ayýrmadýk. 

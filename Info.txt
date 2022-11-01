@@ -72,3 +72,17 @@ Proje Notlarý=> "SharedLibrary" projemize de Microsoft.AspNetCore.App frameworkü
         => Simetrik imzalamada kullanacaðýz string key
     "SecurityKey": "mysecuritykeymysecuritykeymysecuritykeymysecuritykey"
   },
+
+
+  => MiniApi ler için aþaðýdaki ayarlamayý kullanýyoruz.
+
+    "TokenOption": {
+    //Hangi uygulama kullanacaksa onu yazdýk
+    "Audience": [ "www.miniapi1.com"],
+    //Tokený daðýtan
+    "Issuer": "www.authserver.com",
+    //Access token expiration yer alýyor ancak refresh tokený kaldýrdýk refresh tokenla iþi yok.
+    "AccessTokenExpiration": 5,
+    //Simetrik imzalama yaptýðýmýz için bunu da vermemiz gerekiyor.
+    "SecurityKey": "mysecuritykeymysecuritykeymysecuritykeymysecuritykey"
+  },
