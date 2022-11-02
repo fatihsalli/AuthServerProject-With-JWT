@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace AuthServer.Service.Services
 {
@@ -38,8 +39,10 @@ namespace AuthServer.Service.Services
         }
 
         //Payloaddaki key-value değerleri için bu metodu kullandık. Üyelik sisteminin olduğu apiler için.
-        private IEnumerable<Claim> GetClaims(UserApp userApp, List<string> auidences)
+        private async Task<IEnumerable<Claim>> GetClaims(UserApp userApp, List<string> auidences)
         {
+            //Role bazlı kimlik doğrulama tanımlıyoruz. Bunun içinde payload içine role ü eklememiz gerekiyor.
+            var userRoles = await _userManager.GetRolesAsync(userApp);
             var userList = new List<Claim>
             {
                 //Önce key sonra value şeklinde
@@ -53,6 +56,8 @@ namespace AuthServer.Service.Services
             };
             //Her bir auidences için Claim oluşturmak için Select kullandık foreach gibi aslında.
             userList.AddRange(auidences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
+            //Rolleri ekliyoruz.
+            userList.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role,x)));
             return userList;
         }
 
@@ -74,9 +79,7 @@ namespace AuthServer.Service.Services
         public TokenDto CreateToken(UserApp userApp)
         {
             var accessTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.AccessTokenExpiration);
-
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOption.RefreshTokenExpiration);
-
             var securityKey = SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
 
             //Token imza kısmı
@@ -87,7 +90,8 @@ namespace AuthServer.Service.Services
                 issuer: _tokenOption.Issuer,
                 expires: accessTokenExpiration,
                 notBefore: DateTime.Now,
-                claims: GetClaims(userApp, _tokenOption.Audience),
+                //Test amaçlı yaptığımız için metotu asenkron yapmamak için sonuna Result ekledik. Bunu eklemeseydik gelen claimler async olduğu için Task ile dönecekti o sebeple result dedik. Asenkron bir metottan senkron şekilde sonucunu almak için ".Result" (bloklayıcı)
+                claims: GetClaims(userApp, _tokenOption.Audience).Result,
                 signingCredentials: signingCredentials);
 
             //Tokenı oluşturacak olan class

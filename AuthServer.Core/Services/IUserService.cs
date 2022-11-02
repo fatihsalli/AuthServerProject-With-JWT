@@ -9,7 +9,8 @@ namespace AuthServer.Core.Services
     {
         Task<Response<UserAppDto>> CreateUserAsync(CreateUserDto createUserDto);
         Task<Response<UserAppDto>> GetUserByNameAsync(string userName);
-
+        //Kullanıcıya rol tanımlamak için aşağıdaki metotu yazdık.
+        Task<Response<NoDataDto>> CreateUserRolesAsync(string userName);
 
     }
 }

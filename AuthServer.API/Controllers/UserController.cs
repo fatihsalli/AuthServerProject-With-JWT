@@ -33,6 +33,14 @@ namespace AuthServer.API.Controllers
             return ActionResultInstance(await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name));
         }
 
+        //Diğer post ile çakışmaması için action ismini de verdik.
+        [HttpPost("CreateUserRoles/{userName}")]
+        public async Task<IActionResult> CreateUserRoles(string userName)
+        {
+            return ActionResultInstance(await _userService.CreateUserRolesAsync(userName));
+        }
+
+
 
     }
 }
