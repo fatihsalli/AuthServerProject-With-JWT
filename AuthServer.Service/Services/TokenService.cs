@@ -54,7 +54,9 @@ namespace AuthServer.Service.Services
                 //Her üretilen tokena bir id vermek için
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
                 //Claim bazlı authorization tanımlamak için aşağıdaki kodu token payloadında ekliyoruz. Şehir bilgisini seçtik değişebilir.
-                new Claim("city",userApp.City)
+                new Claim("city",userApp.City),
+                //Policy bazlı authorization örneği için kullanıcıda birthdate oluşturup burada claim olarak Payload içine string olarak aldık.
+                new Claim("birth-date",userApp.BirthDate.ToShortDateString())
             };
             //Her bir auidences için Claim oluşturmak için Select kullandık foreach gibi aslında.
             userList.AddRange(auidences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));

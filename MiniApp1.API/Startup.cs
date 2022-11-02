@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MiniApp1.API.Requirements;
 using SharedLibrary.Configurations;
 using SharedLibrary.Extensions;
+using static MiniApp1.API.Requirements.BirthDateRequirement;
 
 namespace MiniApp1.API
 {
@@ -32,6 +35,10 @@ namespace MiniApp1.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniApp1.API", Version = "v1" });
             });
+
+            //Policy bazlý doðrulama için "BirthDateRequirementHandler" nesnesini türettik.
+            services.AddSingleton<IAuthorizationHandler, BirthDateRequirementHandler>();
+
             //Claim bazlý doðrulama için bir þartname oluþturuyoruz. Role bazlý doðrulamadaki gibi direkt olarak yazamýyoruz.Policy oluþturduk.
             services.AddAuthorization(opts =>
             {
@@ -40,6 +47,12 @@ namespace MiniApp1.API
                     //policy.RequireClaim("city", "ankara", "izmir");
                     policy.RequireClaim("city", "ankara");
                 });
+                //Policy bazlý doðrulama için "BirthDateRequirement" classý oluþturduk aþaðýda da policy oluþturuyoruz. "new BirthDateRequirement(18)" 18 yaþýnda olanlar ve büyükler girebilir.
+                opts.AddPolicy("AgePolicy", policy =>
+                {
+                    policy.Requirements.Add(new BirthDateRequirement(18));
+                });
+
             });
         }
 

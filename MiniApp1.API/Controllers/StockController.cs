@@ -12,7 +12,8 @@ namespace MiniApp1.API.Controllers
     public class StockController : ControllerBase
     {
         //Startupta hazırladığımız policy-şartnameyi burada bu şekilde kullandık. Şehir bilgisi Ankara olanlar girebilecek sadece.
-        [Authorize(Roles = "admin,manager",Policy ="AnkaraPolicy")]
+        [Authorize(Policy = "AgePolicy")]
+        [Authorize(Roles = "admin,manager",Policy = "AnkaraPolicy")]        
         [HttpGet]
         public IActionResult GetStock()
         {
