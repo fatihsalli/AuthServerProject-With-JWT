@@ -32,6 +32,15 @@ namespace MiniApp1.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniApp1.API", Version = "v1" });
             });
+            //Claim bazlý doðrulama için bir þartname oluþturuyoruz. Role bazlý doðrulamadaki gibi direkt olarak yazamýyoruz.Policy oluþturduk.
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy("AnkaraPolicy", policy =>
+                {   //Birden fazla þehir yazabiliriz.
+                    //policy.RequireClaim("city", "ankara", "izmir");
+                    policy.RequireClaim("city", "ankara");
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -6,11 +6,13 @@ using System.Security.Claims;
 
 namespace MiniApp1.API.Controllers
 {
-    [Authorize(Roles ="admin,manager")]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class StockController : ControllerBase
     {
+        //Startupta hazırladığımız policy-şartnameyi burada bu şekilde kullandık. Şehir bilgisi Ankara olanlar girebilecek sadece.
+        [Authorize(Roles = "admin,manager",Policy ="AnkaraPolicy")]
         [HttpGet]
         public IActionResult GetStock()
         {
